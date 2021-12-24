@@ -65,6 +65,23 @@ gray_eq = cv2.equalizeHist(imgGray)
 title_win='Gray Image Equalize -> Press "ESC"  or "q" for exit'
 exit_image(title_win,gray_eq)
 
+#version 1.2:  Histogram
+hist = cv2.calcHist(imgBlur_gray, [0], None, [256], [0, 256])
+hist_norm= hist/hist.sum()
+plt.figure(figsize=(15,5))
+plt.subplot(1,2,1)
+plt.title("Grayscale Histogram")
+plt.xlabel("Bins")
+plt.ylabel("Number of Pixels")
+plt.plot(hist)
+plt.xlim([0, 256])
+plt.subplot(1,2,2)
+plt.title("Grayscale Histogram (Normalized)")
+plt.xlabel("Bins")
+plt.ylabel(r"% of Pixels")
+plt.plot(hist_norm)
+plt.xlim([0, 256])
+plt.show()
 
 cv2.destroyAllWindows()
 
