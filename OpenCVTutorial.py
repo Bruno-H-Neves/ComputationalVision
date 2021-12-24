@@ -40,30 +40,33 @@ kernel=np.ones((5,5),np.uint8) #one's matrix for using in morphologic operations
 img = cv2.imread("LastFrame.png",1)
 if np.shape(img) ==():
     print("Invalid Image")
-title_win='Original Image  -> Press "ESC"  or "q" for exit'
+title_win='Original Image  -> Press "ESC"  or "q" to continue'
 exit_image(title_win,img)
 
 imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  #RGB to Gray scale 
-title_win='Gray Image  -> Press "ESC"  or "q" for exit'
+title_win='Gray Image  -> Press "ESC"  or "q" to continue'
 exit_image(title_win,imgGray)
 imgBlur_rgb = cv2.GaussianBlur(img,(7,7),0)     #Gaussian Filter
-title_win='Gaussian Filter RGB Image  -> Press "ESC"  or "q" for exit'
+title_win='Gaussian Filter RGB Image  -> Press "ESC"  or "q" to continue'
 exit_image(title_win,imgBlur_rgb)
 imgBlur_gray = cv2.GaussianBlur(imgGray,(7,7),0, cv2.BORDER_TRANSPARENT)
-title_win='Gaussian Filter Gray Scale Image  -> Press "ESC"  or "q" for exit'
+title_win='Gaussian Filter Gray Scale Image  -> Press "ESC"  or "q" to continue'
 exit_image(title_win,imgBlur_gray)
 imgCanny = cv2.Canny(img, 150, 200) 
-title_win='Edge Image -> Press "ESC"  or "q" for exit'
+title_win='Edge Image -> Press "ESC"  or "q" to continue'
 exit_image(title_win,imgCanny)
 imgDialation = cv2.dilate(imgCanny, kernel, iterations=1) 
-title_win='Dilate Edge Image -> Press "ESC"  or "q" for exit'
+title_win='Dilate Edge Image -> Press "ESC"  or "q" to continue'
 exit_image(title_win,imgDialation)
 imgEroded = cv2.erode(imgDialation, kernel, iterations=1)
-title_win='Erode Dilated Image -> Press "ESC"  or "q" for exit'
+title_win='Erode Dilated Image -> Press "ESC"  or "q" to continue'
 exit_image(title_win,imgEroded)
 gray_eq = cv2.equalizeHist(imgGray)
-title_win='Gray Image Equalize -> Press "ESC"  or "q" for exit'
+title_win='Gray Image Equalize -> Press "ESC"  or "q" to continue'
 exit_image(title_win,gray_eq)
+imgHor = np.hstack((gray_eq,imgBlur_gray))
+title_win='Dual Gray Image-> Press "ESC"  or "q" to continue'
+exit_image(title_win,imgHor)
 
 #version 1.2:  Histogram
 hist = cv2.calcHist(imgBlur_gray, [0], None, [256], [0, 256])
@@ -82,8 +85,25 @@ plt.ylabel(r"% of Pixels")
 plt.plot(hist_norm)
 plt.xlim([0, 256])
 plt.show()
-
 cv2.destroyAllWindows()
+#version 1.3
+imgResize = cv2.resize(img,(imageTypes['Type3'][0],imageTypes['Type3'][1])) # para definir nova dimensao da imagem
+width, height = 250,350
+pts1 = np.float32([[111,219],[287,188],[154,482],[352,440]])
+pts2 = np.float32([[0,0],[width,0],[0,height],[width, height]])
+matrix = cv2.getPerspectiveTransform(pts1, pts2)    #rotacao de uma matriz
+imgOutput = cv2.warpPerspective(img, matrix, (width, height))
+imgCropped = img[0:200, 200:500]
+cv2.imshow("Original Image", img)
+cv2.imshow("Resize Image", imgResize)
+cv2.imshow("Crop Image", imgCropped)
+cv2.imshow("Warm prespective", imgOutput)
+
+cv2.waitKey(0)
+
+
+
+
 
 
 
