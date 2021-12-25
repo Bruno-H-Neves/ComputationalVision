@@ -7,3 +7,4 @@ version 1.2: Compute Histogram
 version 1.3: Resize Image and warm prespective
 Version 2.1: Define target
 Version 2.2: integrate Date and Hour in image
+Version 2.3: Information UsedRam and charge batery

@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 import pytz
+import psutil
 
 def exit_image(title_win,img):
     while True:
@@ -52,12 +53,19 @@ class Header():
         dt_now = datetime.datetime.now(tz= pytz.UTC)
         date=r'%s-%s-%s' %(dt_now.day,dt_now.month,dt_now.year)
         hour=r'%s:%s:%s' %(dt_now.hour,dt_now.minute,dt_now.second) 
+        used_ram='Ram: %s'%(str(psutil.virtual_memory().used))
+        battery = psutil.sensors_battery()
+        bat_percent ='Bat: %s '%(str(battery.percent))
         cv2.rectangle(image,(int(row*0.8),0),(int(row),20),(100,100,100),cv2.FILLED)
         cv2.rectangle(image,(int(row*0.6),0),(int(row*0.8),20),(0,0,0),cv2.FILLED)
+        cv2.rectangle(image,(int(row*0.29),0),(int(row*0.6),20),(250,100,150),cv2.FILLED)
+        cv2.rectangle(image,(0,0),(int(row*0.29),20),(100,100,100),cv2.FILLED)
         cv2.putText(image,date,(int(row*0.615),15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,255,50),1)
         cv2.putText(image,hour,(int(row*0.85),15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,255,50),1)
+        cv2.putText(image,used_ram,(int(row*0.295),15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,0,50),1)
+        cv2.putText(image,bat_percent,(0,15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,0,50),1)
+        
         pass
-
 
 imageTypes={'Type1':[1080,1920],
             'Type2': [1080,1080],
