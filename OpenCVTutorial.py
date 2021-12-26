@@ -43,6 +43,23 @@ class Center():
     def Circular_Target_center(image,point,color=(255,0,0)):    
         cv2.circle(image,point,2,color,1)
 
+    def circular_boll(image,point,color1=(0,255,0),color2=(0,0,255)):  
+        radius_c1=5
+        offset_rad_c1=radius_c1+1
+        radius_c2=15
+        offset_rad_c2=radius_c2+10
+        cv2.circle(image,point,radius_c1,color1,1)
+        cv2.line(image,(point[0],point[1]+radius_c1),(point[0],point[1]+offset_rad_c1),color1,2)
+        cv2.line(image,(point[0],point[1]-radius_c1),(point[0],point[1]-offset_rad_c1),color1,2)
+        cv2.line(image,(point[0]+radius_c1,point[1]),(point[0]+offset_rad_c1,point[1]),color1,2)
+        cv2.line(image,(point[0]-radius_c1,point[1]),(point[0]-offset_rad_c1,point[1]),color1,2)
+        cv2.circle(image,point,radius_c2,color2,1)
+        cv2.line(image,(point[0],point[1]+radius_c2),(point[0],point[1]+offset_rad_c2),color2,2)
+        cv2.line(image,(point[0],point[1]-radius_c2),(point[0],point[1]-offset_rad_c2),color2,2)
+        cv2.line(image,(point[0]+radius_c2,point[1]),(point[0]+offset_rad_c2,point[1]),color2,2)
+        cv2.line(image,(point[0]-radius_c2,point[1]),(point[0]-offset_rad_c2,point[1]),color2,2)
+
+
 class Header():
     def __init__(self):
         pass
@@ -56,6 +73,8 @@ class Header():
         used_ram='Ram: %s'%(str(psutil.virtual_memory().used))
         battery = psutil.sensors_battery()
         bat_percent ='Bat: %s '%(str(battery.percent))
+        timer = cv2.getTickCount()
+        fps = cv2.getTickFrequency()/(cv2.getTickCount()-timer)
         cv2.rectangle(image,(int(row*0.8),0),(int(row),20),(100,100,100),cv2.FILLED)
         cv2.rectangle(image,(int(row*0.6),0),(int(row*0.8),20),(0,0,0),cv2.FILLED)
         cv2.rectangle(image,(int(row*0.29),0),(int(row*0.6),20),(250,100,150),cv2.FILLED)
@@ -63,8 +82,8 @@ class Header():
         cv2.putText(image,date,(int(row*0.615),15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,255,50),1)
         cv2.putText(image,hour,(int(row*0.85),15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,255,50),1)
         cv2.putText(image,used_ram,(int(row*0.295),15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,0,50),1)
-        cv2.putText(image,bat_percent,(0,15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,0,50),1)
-        
+        cv2.putText(image,bat_percent,(int(row*0.1),15),cv2.FONT_HERSHEY_COMPLEX,0.5,(100,0,50),1)
+        cv2.putText(image,str(int(fps)),(15,int(col*0.1)),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
         pass
 
 imageTypes={'Type1':[1080,1920],
@@ -88,13 +107,18 @@ if cap.isOpened():
         linhas=img.shape[0]
         colunas=img.shape[1]
         center_img=(int(colunas/2),int(linhas/2))
+        center_img2=(int(colunas/4),int(linhas/4))
+        center_img3=(int(colunas*3/8),int(linhas*3/8))
+        center_img4=(int(colunas/6),int(linhas/6))
+
         Header.leftH(img)
         Center.Center_Target(img,center_img,(0,255,0))
-        Center.Quadratic_Target_1(img,center_img,(0,255,255))
-        Center.Quadratic_Target_2(img,center_img,(0,0,255))
-        Center.Circular_Target_2(img,center_img,(255,0,0))
+        Center.Circular_Target_2(img,center_img3,(255,0,0))
+        Center.Quadratic_Target_1(img,center_img3,(0,255,255))
+        Center.Quadratic_Target_2(img,center_img4,(0,0,255))
+        Center.Circular_Target_2(img,center_img4,(255,0,0))
         Center.Circular_Target_center(img,center_img,(0,0,0))
-
+        Center.circular_boll(img,center_img2)            
         cv2.imshow("WebCam", frame)
         key = cv2.waitKey(1)   
 

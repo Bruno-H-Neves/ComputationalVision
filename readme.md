@@ -8,3 +8,4 @@ version 1.3: Resize Image and warm prespective
 Version 2.1: Define target
 Version 2.2: integrate Date and Hour in image
 Version 2.3: Information UsedRam and charge batery
+Version 3.0: More Targets
