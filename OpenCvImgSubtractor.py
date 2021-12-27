@@ -85,8 +85,15 @@ if cap.isOpened():
         image=frameGray
         frameGray=img_transfor(frame)
         ImgSub=subtractor(image,frameGray)
-        imgHor = np.hstack((frameGray,ImgSub))
-        cv2.imshow("N-1         ->         N", imgHor)
+        result_max=np.where(ImgSub==np.amax(ImgSub))
+        center_img=(int(result_max[1][0]),int(result_max[0][0]))
+        Center.Quadratic_Target_2(ImgSub,center_img,(255,255,255))
+        Center.Center_Target(ImgSub,center_img,(255,255,255))
+        cv2.imshow("Motion Detect", ImgSub)
+        result_max=np.where(ImgSub==np.amax(ImgSub))
+        center_img=(int(result_max[1][0]),int(result_max[0][0]))
+        Center.circular_boll(frame,center_img,(255,255,255))
+        cv2.imshow("cam",frame)
         key = cv2.waitKey(5)   
         if key == 27 or key==ord('q'): 
             break
