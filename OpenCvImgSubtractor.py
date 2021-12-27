@@ -79,11 +79,13 @@ cap.set(10,100)                    # channel 10: Brightness of the image
 #initialize infinite cycle
 if cap.isOpened():
     CtrlRead, image = cap.read()
+    frameGray=img_transfor(image)
     while True:
         CtrlRead, frame = cap.read()
-        imgHor = np.hstack((image,frame))
-        image=frame
-        cv2.imshow("WebCam", imgHor)
+        image=frameGray
+        frameGray=img_transfor(frame)
+        imgHor = np.hstack((image,frameGray))
+        cv2.imshow("N-1         ->         N", imgHor)
         key = cv2.waitKey(5)   
         if key == 27 or key==ord('q'): 
             break
