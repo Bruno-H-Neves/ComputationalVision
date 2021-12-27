@@ -84,7 +84,8 @@ if cap.isOpened():
         CtrlRead, frame = cap.read()
         image=frameGray
         frameGray=img_transfor(frame)
-        imgHor = np.hstack((image,frameGray))
+        ImgSub=subtractor(image,frameGray)
+        imgHor = np.hstack((frameGray,ImgSub))
         cv2.imshow("N-1         ->         N", imgHor)
         key = cv2.waitKey(5)   
         if key == 27 or key==ord('q'): 
