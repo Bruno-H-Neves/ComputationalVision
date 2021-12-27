@@ -1,11 +1,6 @@
 # env: CvEnvPython37
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-import datetime
-import pytz
-import psutil
-
 
 class Center():
     def __init__(self):
@@ -81,4 +76,17 @@ cap.set(3,imageTypes['Type2'][0])  # channel 3: windows width
 cap.set(4,imageTypes['Type2'][1])  # channel 4: windows height
 cap.set(10,100)                    # channel 10: Brightness of the image
 
+#initialize infinite cycle
+if cap.isOpened():
+    CtrlRead, image = cap.read()
+    while True:
+        CtrlRead, frame = cap.read()
+        imgHor = np.hstack((image,frame))
+        image=frame
+        cv2.imshow("WebCam", imgHor)
+        key = cv2.waitKey(5)   
+        if key == 27 or key==ord('q'): 
+            break
+cap.release()
+cv2.destroyAllWindows()
 
