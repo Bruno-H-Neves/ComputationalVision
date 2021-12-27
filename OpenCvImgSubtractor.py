@@ -1,6 +1,8 @@
 # env: CvEnvPython37
 import cv2
 import numpy as np
+import PySimpleGUI as sg
+import os
 
 class Center():
     def __init__(self):
@@ -97,6 +99,10 @@ if cap.isOpened():
         key = cv2.waitKey(5)   
         if key == 27 or key==ord('q'): 
             break
+folder = sg.popup_get_folder('File Name','File Search')   #4
+os.chdir(folder)
+cv2.imwrite("Detect_RGB.png", frame)
+cv2.imwrite("Detect_Subtract.png", ImgSub)
 cap.release()
 cv2.destroyAllWindows()
 
