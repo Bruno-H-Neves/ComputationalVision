@@ -60,3 +60,9 @@ def img_transfor(imgTransform):
     kernel = np.ones((n,n),np.float32)/25
     imgTransform = cv2.filter2D(imgTransform,-1,kernel)                # 2D Convolution
     return imgTransform
+
+def subtractor(img1,img2,thr=150):
+    ImgSub=abs(img1-img2)
+    ImgSub =(ImgSub<thr)*ImgSub
+    return ImgSub
+
