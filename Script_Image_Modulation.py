@@ -24,12 +24,23 @@ def main():
         num_frames = vidFile.get(cv.CAP_PROP_FRAME_COUNT)
         fps = vidFile.get(cv.CAP_PROP_FPS)
 
-    sg.theme('Black')
+    sg.theme('DarkAmber')
 
-    layout = [[ sg.Slider(range=(0, num_frames),size=(53, 10), orientation='h', key='-slider-'),
-                sg.Button('Exit', size=(7, 1), font='Helvetica 14')],
+    menu_def = [['&File', ['E&xit',]],
+                ['&Help',['&Help','&About Us']]]
+
+    column1 = [ [ sg.Text('LBF', background_color='blue', justification='center', size=(20, 1))],
+                [ sg.Spin(values=('Gaussian', 'Conv2D', 'Blur','Median','bilateral','sep2D','Sobel'), initial_value='LBF', size=(20, 1))],
+                [ sg.Spin(values=('Laplacian', 'Edge'), initial_value='HBF', size=(20, 1))],
+                [ sg.Spin(values=('Dilate', 'Erode'), initial_value='Morphologic', size=(20, 1))]]
+
+
+    layout = [[sg.Menu(menu_def, tearoff=True)],
+              [ sg.Slider(range=(0, num_frames),size=(53, 10), orientation='h', key='-slider-'),
+                sg.Button('Exit', size=(7, 1), font='Helvetica 14'),sg.Checkbox('RGB',key='RGB'),
+                sg.Checkbox('GRAY',key='GRAY'),sg.Checkbox('LBF',key='LBF'),sg.Checkbox('HBF',key='HBF')],
               [ sg.Image(filename='', key='-image1-'),
-                sg.Image(filename='', key='-image2-')],
+                sg.Image(filename='', key='-image2-'),sg.Column(column1, background_color='lightblue')],
               [ sg.Image(filename='', key='-image3-'), 
                 sg.Image(filename='',key='-image4-'),sg.Image(filename='', key='-image5-')]]
 
