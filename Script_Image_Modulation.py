@@ -7,15 +7,7 @@ def FrameTitle(img,Title):
 
 
 def main():
-    imageTypes={'Type1':[1080,1920],
-            'Type2': [1080,1080],
-            'Type3': [1080,566],
-            'Type4': [1080,1350],
-            'Type5': [1200,630],
-            'Type6': [851,315],
-            'Type7': [640,480]}
-
-    filename = sg.popup_get_file('Search File   Cancel for  WebCam')
+    filename = sg.popup_get_file('Search File   CANCEL FOR CHOSE WEBCAM ')
     if filename is None:
         vidFile = cv.VideoCapture(0)
         num_frames=0
@@ -24,7 +16,7 @@ def main():
         num_frames = vidFile.get(cv.CAP_PROP_FRAME_COUNT)
         fps = vidFile.get(cv.CAP_PROP_FPS)
 
-    sg.theme('DarkAmber')
+    sg.theme('DarkGrey7’')
 
     menu_def = [['&File', ['E&xit',]],
                 ['&Help',['&Help','&About Us']]]
@@ -32,21 +24,32 @@ def main():
     column1 = [ [ sg.Text('LBF', background_color='blue', justification='center', size=(20, 1))],
                 [ sg.Spin(values=('Gaussian', 'Conv2D', 'Blur','Median','bilateral','sep2D','Sobel'), initial_value='LBF', size=(20, 1))],
                 [ sg.Spin(values=('Laplacian', 'Edge'), initial_value='HBF', size=(20, 1))],
-                [ sg.Spin(values=('Dilate', 'Erode'), initial_value='Morphologic', size=(20, 1))]]
-
+                [ sg.Spin(values=('Dilate', 'Erode'), initial_value='Morphologic', size=(20, 1))],
+                [sg.Frame(layout=[
+                [sg.Radio('RGB     ', "RADIO1", key='-rgb-', default=True, size=(5,1)), sg.Radio('GRAY', "RADIO1",key='-gray-', size=(5,1))],
+                [sg.Radio('LBF     ', "RADIO1",key='-lbf-', size=(5,1)), sg.Radio('HBF', "RADIO1",key='-hbf-', size=(5,1))]
+                ],title='Select Viewer',title_color='red', tooltip="left")]]
 
     layout = [[sg.Menu(menu_def, tearoff=True)],
               [ sg.Slider(range=(0, num_frames),size=(53, 10), orientation='h', key='-slider-'),
-                sg.Button('Exit', size=(7, 1), font='Helvetica 14'),sg.Checkbox('RGB',key='RGB'),
-                sg.Checkbox('GRAY',key='GRAY'),sg.Checkbox('LBF',key='LBF'),sg.Checkbox('HBF',key='HBF')],
+                sg.Button('Exit', size=(7, 1), font='Helvetica 14')],
               [ sg.Image(filename='', key='-image1-'),
                 sg.Image(filename='', key='-image2-'),sg.Column(column1, background_color='lightblue')],
               [ sg.Image(filename='', key='-image3-'), 
                 sg.Image(filename='',key='-image4-'),sg.Image(filename='', key='-image5-')]]
 
 
-    window = sg.Window('Frame', layout, no_titlebar=True, location=(40,40),size=(1080,600))
+    ret, frame = vidFile.read()
+    #print(frame.shape)
+    scale=frame.shape[0]/frame.shape[1]
+    nb=int(frame.shape[1]/2)
+    frame = cv.resize(frame,(nb,int(nb*scale))) 
+    nb2=nb*1.5
+    cur_frame = 0
+    size_row=int(3.2*nb)
+    size_col=int(0.7*size_row)
 
+    window = sg.Window('Frame', layout, no_titlebar=True, location=(40,40),size=(size_row,size_col))
     image_elem1 = window['-image1-']
     image_elem2 = window['-image2-']
     image_elem3 = window['-image3-']
@@ -55,7 +58,7 @@ def main():
     slider_elem = window['-slider-']
 
     ret, frame = vidFile.read()
-    print(frame.shape)
+    #print(frame.shape)
     scale=frame.shape[0]/frame.shape[1]
     nb=280
     frame = cv.resize(frame,(nb,int(nb*scale))) 
@@ -83,16 +86,28 @@ def main():
         frameGray_Tl = FrameTitle(frameGray,'Gray')
         frameLBF_Tl = FrameTitle( frameLBF,'LBF')
         frameHBF_Tl = FrameTitle(frameHBF,'HBF')
+        framezoom=frameRGB_Tl
+        if values['-rgb-']== True:
+            framezoom=frameRGB_Tl
+        if values['-gray-']== True:
+            framezoom=frameGray_Tl
+        if values['-lbf-']== True:
+            framezoom=frameLBF_Tl
+        if values['-hbf-']== True:
+            framezoom=frameHBF_Tl
         imgbytes = cv.imencode('.png', frameRGB_Tl)[1].tobytes()  
         imgbytes2 = cv.imencode('.png', frameGray_Tl)[1].tobytes() 
         imgbytes3 = cv.imencode('.png', frameLBF_Tl)[1].tobytes() 
         imgbytes4 = cv.imencode('.png', frameHBF_Tl)[1].tobytes() 
-        imgbytes5 = cv.imencode('.png', cv.resize(frameRGB_Tl,(int(nb2),int(nb2*scale))))[1].tobytes() 
+        imgbytes5 = cv.imencode('.png', cv.resize(framezoom,(int(nb2),int(nb2*scale))))[1].tobytes() 
         
         image_elem1.update(data=imgbytes)
         image_elem2.update(data=imgbytes2)
         image_elem3.update(data=imgbytes3)
         image_elem4.update(data=imgbytes4)   
-        image_elem5.update(data=imgbytes5)      
+        image_elem5.update(data=imgbytes5)   
+    
+#    sg.Popup('The button clicked was "{}"'.format(event),
+#         'The values are', values)   
 
 main()
