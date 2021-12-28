@@ -21,7 +21,7 @@ def main():
     menu_def = [['&File', ['E&xit',]],
                 ['&Help',['&Help','&About Us']]]
 
-    column1 = [ [ sg.Text('LBF', background_color='blue', justification='center', size=(20, 1))],
+    column1 = [ [ sg.Text('FILTER_TYPE', background_color='blue', justification='center', size=(20, 1))],
                 [ sg.Spin(values=('Gaussian', 'Conv2D', 'Blur','Median','bilateral','sep2D','Sobel'), initial_value='LBF', size=(20, 1))],
                 [ sg.Spin(values=('Laplacian', 'Edge'), initial_value='HBF', size=(20, 1))],
                 [ sg.Spin(values=('Dilate', 'Erode'), initial_value='Morphologic', size=(20, 1))],
@@ -48,7 +48,7 @@ def main():
     cur_frame = 0
     size_row=int(3.2*nb)
     size_col=int(0.7*size_row)
-
+#size=(1080,600)
     window = sg.Window('Frame', layout, no_titlebar=True, location=(40,40),size=(size_row,size_col))
     image_elem1 = window['-image1-']
     image_elem2 = window['-image2-']
@@ -78,13 +78,35 @@ def main():
         slider_elem.update(cur_frame)
         cur_frame += 1
         frameRGB=frame.copy()
+        text_lbf=''
         frameRGB_Tl = FrameTitle(frameRGB,'RGB')
         frameGray = cv.cvtColor(frame, cv.COLOR_RGB2GRAY)
-        kernel = np.ones((5,5),np.float32)/25
-        frameLBF = cv.filter2D(frameGray,-1,kernel)
+        frameLBF = cv.GaussianBlur(frameGray,(3,3),2)
+        if values[1]== 'Gaussian':
+            frameLBF = cv.GaussianBlur(frameGray,(3,3),2)
+            text_lbf=" LBF: Gaussian Blur"
+        if values[1]== 'Conv2D':
+            frameLBF = cv.sepFilter2D(frameGray,ddepth=2,kernelX=15,kernelY=5)
+            text_lbf=" LBF: SepFilter2D"
+        if values[1]==  'Blur':
+            frameLBF = cv.blur(frameGray,(5,5))
+            text_lbf=" LBF: Blur"
+        if values[1]== 'Median':
+            frameLBF = cv.medianBlur(frameGray,5)
+            text_lbf=" LBF: Median Blur"
+        if values[1]== 'bilateral':
+            frameLBF = cv.bilateralFilter(frameGray,9,75,75) 
+            text_lbf=" LBF: Bilateral"
+        if values[1]== 'sep2D':
+            kernel = np.ones((5,5),np.float32)/25
+            frameLBF = cv.filter2D(frameGray,-1,kernel)
+            text_lbf=" LBF: Filter 2D"
+        if values[1]== 'Sobel':
+            frameLBF = cv.Sobel(frameGray,ksize=5,dx=3,dy=3,ddepth=-1)
+            text_lbf=" LBF: Sobel"
         frameHBF = cv.Canny(frameGray,100,200) 
         frameGray_Tl = FrameTitle(frameGray,'Gray')
-        frameLBF_Tl = FrameTitle( frameLBF,'LBF')
+        frameLBF_Tl = FrameTitle( frameLBF,text_lbf)
         frameHBF_Tl = FrameTitle(frameHBF,'HBF')
         framezoom=frameRGB_Tl
         if values['-rgb-']== True:
