@@ -1,0 +1,112 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'P5_Script_Comp_Vision.ui'
+#
+# Created by: PyQt5 UI code generator 5.9.2
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(733, 544)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 733, 21))
+        self.menubar.setObjectName("menubar")
+        self.menuFile = QtWidgets.QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        self.menuOpen_File = QtWidgets.QMenu(self.menuFile)
+        self.menuOpen_File.setObjectName("menuOpen_File")
+        self.menuSave = QtWidgets.QMenu(self.menuFile)
+        self.menuSave.setObjectName("menuSave")
+        self.menuEdit = QtWidgets.QMenu(self.menubar)
+        self.menuEdit.setObjectName("menuEdit")
+        self.menuHelp = QtWidgets.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+        self.actionExit = QtWidgets.QAction(MainWindow)
+        self.actionExit.setObjectName("actionExit")
+        self.actionCut = QtWidgets.QAction(MainWindow)
+        self.actionCut.setObjectName("actionCut")
+        self.actionPaste = QtWidgets.QAction(MainWindow)
+        self.actionPaste.setObjectName("actionPaste")
+        self.actionPrint = QtWidgets.QAction(MainWindow)
+        self.actionPrint.setObjectName("actionPrint")
+        self.actionPublish = QtWidgets.QAction(MainWindow)
+        self.actionPublish.setObjectName("actionPublish")
+        self.actionHelp = QtWidgets.QAction(MainWindow)
+        self.actionHelp.setObjectName("actionHelp")
+        self.actionAbout_Us = QtWidgets.QAction(MainWindow)
+        self.actionAbout_Us.setObjectName("actionAbout_Us")
+        self.actionCopy = QtWidgets.QAction(MainWindow)
+        self.actionCopy.setObjectName("actionCopy")
+        self.actionFile = QtWidgets.QAction(MainWindow)
+        self.actionFile.setObjectName("actionFile")
+        self.actionFolder = QtWidgets.QAction(MainWindow)
+        self.actionFolder.setObjectName("actionFolder")
+        self.actionSave_2 = QtWidgets.QAction(MainWindow)
+        self.actionSave_2.setObjectName("actionSave_2")
+        self.actionSave_As = QtWidgets.QAction(MainWindow)
+        self.actionSave_As.setObjectName("actionSave_As")
+        self.menuOpen_File.addAction(self.actionFile)
+        self.menuOpen_File.addAction(self.actionFolder)
+        self.menuSave.addAction(self.actionSave_2)
+        self.menuSave.addAction(self.actionSave_As)
+        self.menuFile.addAction(self.menuOpen_File.menuAction())
+        self.menuFile.addAction(self.menuSave.menuAction())
+        self.menuFile.addAction(self.actionPrint)
+        self.menuFile.addAction(self.actionPublish)
+        self.menuFile.addAction(self.actionExit)
+        self.menuEdit.addAction(self.actionCut)
+        self.menuEdit.addAction(self.actionCopy)
+        self.menuEdit.addAction(self.actionPaste)
+        self.menuHelp.addAction(self.actionHelp)
+        self.menuHelp.addAction(self.actionAbout_Us)
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
+        self.menubar.addAction(self.menuHelp.menuAction())
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setStatusTip(_translate("MainWindow", "https://github.com/Bruno-H-Neves/ComputationalVision"))
+        self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.menuOpen_File.setTitle(_translate("MainWindow", "Open File"))
+        self.menuSave.setTitle(_translate("MainWindow", "Save"))
+        self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
+        self.menuHelp.setTitle(_translate("MainWindow", "Help"))
+        self.statusbar.setStatusTip(_translate("MainWindow", "https://github.com/Bruno-H-Neves/ComputationalVision"))
+        self.actionExit.setText(_translate("MainWindow", "Exit"))
+        self.actionCut.setText(_translate("MainWindow", "Cut"))
+        self.actionPaste.setText(_translate("MainWindow", "Paste"))
+        self.actionPrint.setText(_translate("MainWindow", "Print"))
+        self.actionPublish.setText(_translate("MainWindow", "Publish"))
+        self.actionHelp.setText(_translate("MainWindow", "Help"))
+        self.actionAbout_Us.setText(_translate("MainWindow", "About Us..."))
+        self.actionCopy.setText(_translate("MainWindow", "Copy"))
+        self.actionFile.setText(_translate("MainWindow", "File"))
+        self.actionFolder.setText(_translate("MainWindow", "Folder"))
+        self.actionSave_2.setText(_translate("MainWindow", "Save"))
+        self.actionSave_As.setText(_translate("MainWindow", "Save As..."))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
+
