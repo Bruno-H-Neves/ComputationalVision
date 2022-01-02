@@ -110,6 +110,7 @@ class Ui_MainWindow(object):
         self.pushButton.clicked.connect(self.loadImage)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+       
 ###########################################
     #function for image processing
  #   def loadImage(self):
@@ -117,13 +118,27 @@ class Ui_MainWindow(object):
 #        self.image = cv2.imread(self.filename)
 #        self.setPhoto(self.image)
 ######################################
+
+
+
     def loadImage(self):
-        vid = cv2.VideoCapture(0)
-        while (vid.isOpened()):
-            ctrl, self.image = vid.read()
-            delay=cv2.waitKey(5)
-            if delay==27:
+        self.started = False
+        self.temp=None
+
+
+        vid = cv2.VideoCapture(0)                                       # Read Webcam
+        while (vid.isOpened()):                                         # Infinite Loop: Read video          
+            ctrl, self.image = vid.read()                               # Read frames
+            self.image  = imutils.resize(self.image ,height = 480 )     # Resize
+            self.image = imutils.resize(self.image,width=640)
+            frame = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+            self.image = QImage(frame, frame.shape[1],frame.shape[0],frame.strides[0],QImage.Format_RGB888)
+            self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
+
+            key=cv2.waitKey(5)                
+            if key==27  or key==ord('q'):
                 break
+        vid.release()
 	
     def setPhoto(self,image):
         self.tmp = image
@@ -140,7 +155,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Bruno-H-Neves Computational Vision"))
         MainWindow.setStatusTip(_translate("MainWindow", "https://github.com/Bruno-H-Neves/ComputationalVision"))
         self.label.setText(_translate("MainWindow", "Image_RGB"))
-        self.pushButton.setText(_translate("MainWindow", "Open"))
+        self.pushButton.setText(_translate("MainWindow", "Open/Close"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuOpen_File.setTitle(_translate("MainWindow", "Open"))
         self.menuSave.setTitle(_translate("MainWindow", "Save"))
