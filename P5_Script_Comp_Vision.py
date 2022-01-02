@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'P5_Script_Comp_Vision.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
@@ -117,12 +110,21 @@ class Ui_MainWindow(object):
         self.pushButton.clicked.connect(self.loadImage)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-
+###########################################
+    #function for image processing
+ #   def loadImage(self):
+#        self.filename = QFileDialog.getOpenFileName(filter="Image (*.*)")[0]
+#        self.image = cv2.imread(self.filename)
+#        self.setPhoto(self.image)
+######################################
     def loadImage(self):
-        self.filename = QFileDialog.getOpenFileName(filter="Image (*.*)")[0]
-        self.image = cv2.imread(self.filename)
-        self.setPhoto(self.image)
-
+        vid = cv2.VideoCapture(0)
+        while (vid.isOpened()):
+            ctrl, self.image = vid.read()
+            delay=cv2.waitKey(5)
+            if delay==27:
+                break
+	
     def setPhoto(self,image):
         self.tmp = image
         image = imutils.resize(image,width=640)
