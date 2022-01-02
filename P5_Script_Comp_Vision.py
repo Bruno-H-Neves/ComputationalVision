@@ -7,6 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtGui import QImage
+import cv2, imutils
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -111,7 +114,24 @@ class Ui_MainWindow(object):
         self.actionMaximize.triggered.connect(MainWindow.showMaximized)
         self.actionNormal.triggered.connect(MainWindow.showNormal)
         self.actionMinimaze.triggered.connect(MainWindow.showMinimized)
+        self.pushButton.clicked.connect(self.loadImage)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+
+    def loadImage(self):
+        self.filename = QFileDialog.getOpenFileName(filter="Image (*.*)")[0]
+        self.image = cv2.imread(self.filename)
+        self.setPhoto(self.image)
+
+    def setPhoto(self,image):
+        self.tmp = image
+        image = imutils.resize(image,width=640)
+        frame = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = QImage(frame, frame.shape[1],frame.shape[0],frame.strides[0],QImage.Format_RGB888)
+        self.label.setPixmap(QtGui.QPixmap.fromImage(image))
+    
+
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
