@@ -124,7 +124,12 @@ class Ui_MainWindow(object):
     def loadImage(self):
         self.started = False
         self.temp=None
-
+        if self.started:                                                # Dynamic instruction button
+            self.started=False
+            self.pushButton.setText('Start')
+        else:
+            self.started=True
+            self.pushButton.setText('Stop')
 
         vid = cv2.VideoCapture(0)                                       # Read Webcam
         while (vid.isOpened()):                                         # Infinite Loop: Read video          
@@ -155,7 +160,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Bruno-H-Neves Computational Vision"))
         MainWindow.setStatusTip(_translate("MainWindow", "https://github.com/Bruno-H-Neves/ComputationalVision"))
         self.label.setText(_translate("MainWindow", "Image_RGB"))
-        self.pushButton.setText(_translate("MainWindow", "Open/Close"))
+        self.pushButton.setText(_translate("MainWindow", "Start"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuOpen_File.setTitle(_translate("MainWindow", "Open"))
         self.menuSave.setTitle(_translate("MainWindow", "Save"))
