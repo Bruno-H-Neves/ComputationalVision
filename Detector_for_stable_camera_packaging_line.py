@@ -6,7 +6,6 @@ import os
 def img_transfor(imgTransform):
     n=5
     imgTransform = cv2.cvtColor(imgTransform, cv2.COLOR_RGB2GRAY)
-    #LB Filter    
     kernel = np.ones((n,n),np.float32)/25
     imgTransform = cv2.filter2D(imgTransform,-1,kernel)                # 2D Convolution
     return imgTransform
@@ -16,10 +15,7 @@ def subtractor(img1,img2,thr=150):
     ImgSub =(ImgSub<thr)*ImgSub
     return ImgSub
 
-
-
 cap = cv2.VideoCapture(0)
-
 if cap.isOpened():
     CtrlRead, image = cap.read()
     frameGray=img_transfor(image)
@@ -42,15 +38,13 @@ if cap.isOpened():
                 x, y, w, h = cv2.boundingRect(cnt)
                 cv2.rectangle(image_draw, (x, y),((x+w),(y+h)), (0, 255, 255), 1)
                 detections.append([x, y, w, h])
-
-    
         cv2.imshow("original",frame)
         cv2.imshow("Region of interess",image_draw)
         cv2.imshow("Subtrator",mask)
         key = cv2.waitKey(5)   
         if key == 27 or key==ord('q'): 
             break
-folder = sg.popup_get_folder('Folder Name','Folder Search')   #4
+folder = sg.popup_get_folder('Folder Name','Folder Search')   
 os.chdir(folder)
 cv2.imwrite("Detect_RGB.png", frame)
 cv2.imwrite("ROI.png",image_draw )
